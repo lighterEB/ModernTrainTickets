@@ -1,4 +1,4 @@
-package com.lightereb.moderntraintickets.aspect;
+package com.lightereb.moderntraintickets.common.aspect;
 
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;

@@ -1,4 +1,4 @@
-package com.lightereb.moderntraintickets.member.controller;
+package com.lightereb.moderntraintickets.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

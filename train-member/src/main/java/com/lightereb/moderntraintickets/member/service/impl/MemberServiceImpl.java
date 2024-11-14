@@ -13,6 +13,6 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public int queryCount() {
-        return memberMapper.count();
+        return Math.toIntExact(memberMapper.countByExample(null));
     }
 }

@@ -2,22 +2,18 @@ package com.lightereb.moderntraintickets.member.controller;
 
 import com.lightereb.moderntraintickets.member.service.IMemberService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TestController {
+@RequestMapping("/member")
+public class MemberController {
 
     @Resource
     private IMemberService memberService;
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
-
-    @GetMapping("/count")
-    public Integer count() {
-        return memberService.queryCount();
+    @RequestMapping("/register")
+    public Long register(String mobile) {
+        return memberService.register(mobile);
     }
 }

@@ -4,6 +4,7 @@ import com.lightereb.moderntraintickets.common.exception.BusinessException;
 import com.lightereb.moderntraintickets.common.resp.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,5 +42,18 @@ public class ControllerExceptionHandler {
         Object msg =  e.getMessage() == null ? e.getE().getDesc() : e.getMessage();
         LOG.error("业务异常：{}", msg);
         return Result.failed(msg.toString());
+    }
+
+    /**
+     * 校验异常
+     * @param e 校验异常
+     * @return 结果
+     */
+    @ExceptionHandler(value = BindException.class)
+    @ResponseBody
+    public Result<String> handleException(final BindException e) {
+        String defaultMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        LOG.error("校验异常：{}", defaultMessage, e);
+        return Result.failed(defaultMessage);
     }
 }

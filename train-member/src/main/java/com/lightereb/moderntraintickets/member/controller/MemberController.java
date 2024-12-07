@@ -1,6 +1,6 @@
 package com.lightereb.moderntraintickets.member.controller;
 
-import com.lightereb.moderntraintickets.common.resp.CommonResp;
+import com.lightereb.moderntraintickets.common.resp.Result;
 import com.lightereb.moderntraintickets.member.service.IMemberService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,7 @@ public class MemberController {
     private IMemberService memberService;
 
     @RequestMapping("/register")
-    public CommonResp<String> register(String mobile) {
-        return CommonResp.ok();
+    public Result<String> register(String mobile) {
+        return memberService.register(mobile);
     }
 }

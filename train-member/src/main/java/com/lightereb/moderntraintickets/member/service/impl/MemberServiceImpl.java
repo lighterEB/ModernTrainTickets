@@ -1,17 +1,23 @@
 package com.lightereb.moderntraintickets.member.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.lightereb.moderntraintickets.common.enums.BusinessExceptionEnum;
+import com.lightereb.moderntraintickets.common.exception.BusinessException;
+import com.lightereb.moderntraintickets.common.resp.Result;
 import com.lightereb.moderntraintickets.member.domain.Member;
 import com.lightereb.moderntraintickets.member.domain.MemberExample;
 import com.lightereb.moderntraintickets.member.mapper.MemberMapper;
 import com.lightereb.moderntraintickets.member.service.IMemberService;
 import jakarta.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class MemberServiceImpl implements IMemberService {
+    private static final Logger LOG = LoggerFactory.getLogger(MemberServiceImpl.class);
 
     @Resource
     private MemberMapper memberMapper;
@@ -22,17 +28,25 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public long register(String mobile) {
+    public Result<String> register(String mobile) {
         MemberExample example= new MemberExample();
         example.createCriteria().andMobileEqualTo(mobile);
         Member member = new Member();
         member.setId(System.currentTimeMillis());
         member.setMobile(mobile);
-        List<Member> members = memberMapper.selectByExample(example);
-        if (CollectionUtil.isNotEmpty(members)) {
-            throw new RuntimeException("手机号已经注册！");
+        try {
+            List<Member> members = memberMapper.selectByExample(example);
+            if (CollectionUtil.isNotEmpty(members)) {
+                throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_EXIST);
+            }
+            memberMapper.insertSelective(member);
+        } catch (BusinessException e){
+            throw e;
+        } catch (Exception e) {
+            LOG.error("注册手机号时发生异常：{}", e.getMessage());
+            throw new BusinessException(e.getMessage());
         }
-        memberMapper.insertSelective(member);
-        return member.getId();
+
+        return Result.ok();
     }
 }

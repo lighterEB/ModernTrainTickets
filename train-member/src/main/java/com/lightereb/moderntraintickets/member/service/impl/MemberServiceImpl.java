@@ -6,6 +6,7 @@ import com.lightereb.moderntraintickets.common.exception.BusinessException;
 import com.lightereb.moderntraintickets.common.resp.Result;
 import com.lightereb.moderntraintickets.member.domain.Member;
 import com.lightereb.moderntraintickets.member.domain.MemberExample;
+import com.lightereb.moderntraintickets.member.dto.request.MemberRegisterRequest;
 import com.lightereb.moderntraintickets.member.mapper.MemberMapper;
 import com.lightereb.moderntraintickets.member.service.IMemberService;
 import jakarta.annotation.Resource;
@@ -28,7 +29,8 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public Result<String> register(String mobile) {
+    public Result<String> register(MemberRegisterRequest memberRegisterRequest) {
+        String mobile = memberRegisterRequest.getMobile();
         MemberExample example= new MemberExample();
         example.createCriteria().andMobileEqualTo(mobile);
         Member member = new Member();

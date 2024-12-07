@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.lightereb.moderntraintickets.common.enums.BusinessExceptionEnum;
 import com.lightereb.moderntraintickets.common.exception.BusinessException;
 import com.lightereb.moderntraintickets.common.resp.Result;
+import com.lightereb.moderntraintickets.common.util.SnowUtil;
 import com.lightereb.moderntraintickets.member.domain.Member;
 import com.lightereb.moderntraintickets.member.domain.MemberExample;
 import com.lightereb.moderntraintickets.member.dto.request.MemberRegisterRequest;
@@ -34,7 +35,7 @@ public class MemberServiceImpl implements IMemberService {
         MemberExample example= new MemberExample();
         example.createCriteria().andMobileEqualTo(mobile);
         Member member = new Member();
-        member.setId(System.currentTimeMillis());
+        member.setId(SnowUtil.getSnowflakeNextId());
         member.setMobile(mobile);
         try {
             List<Member> members = memberMapper.selectByExample(example);
